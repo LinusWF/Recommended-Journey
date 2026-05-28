@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommended journey — Layered model</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+<style>
+  /* ============ WF tokens ============ */
+  :root {
+    --wf-color-dark-peach:    #FF8165;
+    --wf-color-medium-peach:  #FF9A84;
+    --wf-color-bright-peach:  #FFCFC2;
+    --wf-color-dark-green:    #062926;
+    --wf-color-medium-green:  #074037;
+    --wf-color-black:         #000000;
+    --wf-color-white:         #FFFFFF;
+    --wf-color-creme:         #F8F4F1;
+    --wf-color-text-primary:  #1C1C1C;
+    --wf-color-text-secondary:rgba(0, 0, 0, 0.6);
+    --wf-color-text-disabled: rgba(0, 0, 0, 0.38);
+    --wf-color-surface:       #FFFFFF;
+    --wf-color-surface-subtle:#F5F5F5;
+    --wf-color-border:        rgba(0, 0, 0, 0.12);
+    --wf-color-yellow:        #FFD597;
+    --wf-color-mint:          #BDE5CB;
+    --wf-color-risk-extreme:  #DC3D3D;
+    --wf-color-question:      #B8860B;
+    --wf-color-question-bg:   #FFF8E5;
+    --wf-color-fallback:      #7A5BA8;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--wf-color-text-primary);
+    background: var(--wf-color-surface-subtle);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .material-symbols-sharp {
+    font-family: 'Material Symbols Sharp';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ============ Page chrome ============ */
+  .page-shell {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+  }
+  .overline {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--wf-color-text-secondary);
+    margin-bottom: 8px;
+  }
+  .page-title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--wf-color-text-secondary);
+    margin-top: 8px;
+    max-width: 800px;
+  }
+
+  /* ============ Layer band ============ */
+  .layer {
+    background: var(--wf-color-white);
+    border: 1px solid var(--wf-color-border);
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .layer-label {
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--wf-color-creme);
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--wf-color-text-secondary);
+  }
+  .layer-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+  .layer-subtitle {
+    font-size: 13px;
+    color: var(--wf-color-text-secondary);
+    margin-bottom: 20px;
+  }
+
+  /* ============ Layer 1: Segmentation ============ */
+  .segmentation-grid {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr 40px 1.5fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--wf-color-text-secondary);
+  }
+  .arrow-col .material-symbols-sharp { font-size: 24px; }
+
+  .dim-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .dim-card {
+    background: var(--wf-color-creme);
+    border: 1px solid var(--wf-color-border);
+    padding: 14px 16px;
+  }
+  .dim-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--wf-color-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .dim-card-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .dim-card-meta {
+    font-size: 11px;
+    color: var(--wf-color-text-secondary);
+    margin-top: 4px;
+  }
+
+  .segment-card {
+    background: var(--wf-color-bright-peach);
+    border: 2px solid var(--wf-color-dark-peach);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .segment-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--wf-color-text-primary);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .segment-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .segment-card-meta {
+    font-size: 12px;
+    color: var(--wf-color-text-primary);
+    opacity: 0.7;
+  }
+
+  .focus-view {
+    background: var(--wf-color-white);
+    border: 1px solid var(--wf-color-text-primary);
+  }
+  .focus-view-header {
+    background: var(--wf-color-text-primary);
+    color: var(--wf-color-white);
+    padding: 8px 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .focus-view-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+  .focus-col {
+    padding: 16px;
+  }
+  .focus-col + .focus-col {
+    border-left: 1px solid var(--wf-color-border);
+  }
+  .focus-col-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--wf-color-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .focus-col-headline {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .focus-todo-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 4px 0;
+  }
+  .focus-progress-big {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--wf-color-medium-green);
+    line-height: 1;
+    margin: 6px 0 8px;
+  }
+  .focus-progress-stat {
+    font-size: 12px;
+    color: var(--wf-color-text-secondary);
+  }
+
+  /* ============ Connector ============ */
+  .layer-connector {
+    text-align: center;
+    margin: 0 0 16px 0;
+  }
+  .layer-connector-arrow {
+    width: 40px;
+    height: 40px;
+    background: var(--wf-color-question-bg);
+    border: 1.5px dashed var(--wf-color-question);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--wf-color-question);
+    margin-bottom: 8px;
+  }
+  .open-question {
+    background: var(--wf-color-question-bg);
+    border-left: 4px solid var(--wf-color-question);
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .open-question-icon {
+    color: var(--wf-color-question);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .open-question-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #7a5a00;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .open-question-body {
+    font-size: 13px;
+    color: var(--wf-color-text-primary);
+    line-height: 1.5;
+  }
+  .open-question-body strong { font-weight: 600; }
+
+  /* ============ Layer 2: DD workflow ============ */
+  .workflow-stages {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    margin-top: 12px;
+  }
+
+  .stage {
+    border: 1px solid var(--wf-color-border);
+    background: var(--wf-color-white);
+    padding: 0;
+    position: relative;
+    transition: border-color 120ms ease, background 120ms ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage + .stage { border-left: none; }
+  .stage:hover { background: #FAFAFA; }
+  .stage.is-active {
+    background: var(--wf-color-creme);
+    box-shadow: inset 0 -3px 0 0 var(--wf-color-dark-peach);
+  }
+
+  .stage-header {
+    padding: 16px 20px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .stage-num {
+    width: 28px;
+    height: 28px;
+    background: var(--wf-color-text-primary);
+    color: var(--wf-color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border-radius: 4px;
+  }
+  .stage.is-active .stage-num { background: var(--wf-color-dark-peach); }
+  .stage-titles { flex: 1; min-width: 0; }
+  .stage-overline {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--wf-color-text-secondary);
+    text-transform: uppercase;
+  }
+  .stage-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .stage-body {
+    padding: 0 20px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage-desc {
+    font-size: 12px;
+    color: var(--wf-color-text-secondary);
+    margin-bottom: 12px;
+  }
+
+  /* Action chips inside stages */
+  .stage-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .action-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--wf-color-white);
+    border: 1px solid var(--wf-color-border);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+    position: relative;
+  }
+  .action-chip:hover {
+    border-color: var(--wf-color-dark-peach);
+    background: var(--wf-color-creme);
+  }
+  .action-chip.is-active {
+    border-color: var(--wf-color-dark-peach);
+    background: var(--wf-color-bright-peach);
+  }
+  .action-chip-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wf-color-surface-subtle);
+    color: var(--wf-color-text-primary);
+    flex-shrink: 0;
+  }
+  .action-chip-icon .material-symbols-sharp { font-size: 14px; }
+  .action-chip.is-recommended .action-chip-icon {
+    background: var(--wf-color-mint);
+  }
+  .action-chip.is-fallback .action-chip-icon {
+    background: rgba(122, 91, 168, 0.15);
+    color: var(--wf-color-fallback);
+  }
+  .action-chip-label {
+    flex: 1;
+  }
+  .action-chip-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    background: var(--wf-color-mint);
+    color: #1a4d2e;
+  }
+  .action-chip.is-fallback .action-chip-tag {
+    background: rgba(122, 91, 168, 0.15);
+    color: var(--wf-color-fallback);
+  }
+
+  /* ============ Stage detail panel ============ */
+  .stage-detail-wrap {
+    margin-top: 16px;
+    border: 1px solid var(--wf-color-text-primary);
+    background: var(--wf-color-white);
+    display: none;
+  }
+  .stage-detail-wrap.is-open { display: block; }
+
+  .stage-detail-header {
+    background: var(--wf-color-text-primary);
+    color: var(--wf-color-white);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stage-detail-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .stage-detail-title-overline {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .stage-detail-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .stage-detail-close {
+    background: transparent;
+    color: var(--wf-color-white);
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.8;
+  }
+  .stage-detail-close:hover { opacity: 1; }
+
+  .stage-detail-body {
+    padding: 24px;
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .detail-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--wf-color-text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* Validation list */
+  .validation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .validation-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    background: var(--wf-color-surface-subtle);
+    border-left: 3px solid var(--wf-color-text-primary);
+  }
+  .validation-item--has { border-left-color: var(--wf-color-medium-green); }
+  .validation-item--if  { border-left-color: var(--wf-color-question); }
+  .validation-item--is  { border-left-color: var(--wf-color-fallback); }
+  .validation-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 6px;
+    background: var(--wf-color-white);
+    border: 1px solid var(--wf-color-border);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .validation-item--has .validation-tag { color: #1a4d2e; border-color: var(--wf-color-medium-green); }
+  .validation-item--if  .validation-tag { color: #7a5a00; border-color: var(--wf-color-question); }
+  .validation-item--is  .validation-tag { color: var(--wf-color-fallback); border-color: var(--wf-color-fallback); }
+  .validation-text {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .validation-text code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--wf-color-white);
+    padding: 1px 5px;
+    font-size: 12px;
+    border: 1px solid var(--wf-color-border);
+  }
+
+  /* Requirements list */
+  .req-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .req-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 0;
+  }
+  .req-item .material-symbols-sharp {
+    font-size: 16px;
+    color: var(--wf-color-text-secondary);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .req-item-text { line-height: 1.4; }
+  .req-item-text strong { font-weight: 600; }
+
+  .req-empty {
+    font-size: 12px;
+    color: var(--wf-color-text-secondary);
+    font-style: italic;
+    padding: 8px 0;
+  }
+
+  /* Sub-decision badge inside Mitigate */
+  .sub-decision {
+    background: var(--wf-color-question-bg);
+    border: 1px solid var(--wf-color-question);
+    padding: 10px 14px;
+    font-size: 12px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sub-decision .material-symbols-sharp {
+    font-size: 16px;
+    color: var(--wf-color-question);
+  }
+
+  /* Tip */
+  .tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    background: var(--wf-color-creme);
+    border: 1px solid var(--wf-color-border);
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .tip .material-symbols-sharp {
+    font-size: 18px;
+    color: var(--wf-color-text-secondary);
+    flex-shrink: 0;
+  }
+
+  /* ============ Tabs at top of Layer 2 ============ */
+  .stage-progression-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--wf-color-text-secondary);
+    margin-top: 8px;
+  }
+  .stage-progression-hint .material-symbols-sharp {
+    font-size: 16px;
+  }
+
+  /* ============ Footer note ============ */
+  .footer-note {
+    font-size: 11px;
+    color: var(--wf-color-text-secondary);
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  /* responsive */
+  @media (max-width: 1024px) {
+    .segmentation-grid { grid-template-columns: 1fr; }
+    .arrow-col { display: none; }
+    .workflow-stages { grid-template-columns: 1fr; }
+    .stage + .stage { border-left: 1px solid var(--wf-color-border); border-top: none; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .focus-view-body { grid-template-columns: 1fr; }
+    .focus-col + .focus-col { border-left: none; border-top: 1px solid var(--wf-color-border); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+
+  <!-- ============ Page header ============ -->
+  <header class="page-header">
+    <div class="overline">Recommended journey · Layered model</div>
+    <h1 class="page-title">Segmentation + due diligence workflow</h1>
+    <p class="page-subtitle">
+      The recommended journey has two layers. Segmentation defines which suppliers the customer focuses on. The due diligence workflow runs on those suppliers and progresses through three stages with embedded validation logic. Click any stage or action to see what's required.
+    </p>
+  </header>
+
+  <!-- ============ Layer 1: Segmentation ============ -->
+  <section class="layer">
+    <span class="layer-label">Layer 1</span>
+    <h2 class="layer-title">Segmentation</h2>
+    <div class="layer-subtitle">Customer focus — which suppliers to work with, scoped by spend or custom property/category.</div>
+
+    <div class="segmentation-grid">
+
+      <!-- Dimensions -->
+      <div class="dim-stack">
+        <div class="dim-card">
+          <div class="dim-card-label">Dimension A</div>
+          <div class="dim-card-title">Spend</div>
+          <div class="dim-card-meta">€ applied to supplier</div>
+        </div>
+        <div class="dim-card">
+          <div class="dim-card-label">Dimension B</div>
+          <div class="dim-card-title">Custom property / category</div>
+          <div class="dim-card-meta">Customer-defined tag (e.g. Tier 1, strategic)</div>
+        </div>
+      </div>
+
+      <div class="arrow-col"><span class="material-symbols-sharp">arrow_forward</span></div>
+
+      <!-- Defined segment -->
+      <div class="segment-card">
+        <div class="segment-card-label">Defined segment</div>
+        <div class="segment-card-name">e.g. Strategic suppliers</div>
+        <div class="segment-card-meta">Tier 1 · Spend &gt; €500k · 156 suppliers in scope</div>
+      </div>
+
+      <div class="arrow-col"><span class="material-symbols-sharp">arrow_forward</span></div>
+
+      <!-- Focus view -->
+      <div class="focus-view">
+        <div class="focus-view-header">Segment focus view</div>
+        <div class="focus-view-body">
+          <div class="focus-col">
+            <div class="focus-col-label">What to do</div>
+            <div class="focus-col-headline">Workflow steps required</div>
+            <div class="focus-todo-item"><span>To screen</span><strong>14</strong></div>
+            <div class="focus-todo-item"><span>Awaiting engagement</span><strong>23</strong></div>
+            <div class="focus-todo-item"><span>Open expectations</span><strong>9</strong></div>
+          </div>
+          <div class="focus-col">
+            <div class="focus-col-label">What's been done</div>
+            <div class="focus-col-headline">Progress against segment</div>
+            <div class="focus-progress-big">62%</div>
+            <div class="focus-progress-stat">€18.4M of €29.7M spend mitigated</div>
+            <div class="focus-progress-stat">97 of 156 suppliers resolved</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Connector + open question ============ -->
+  <div class="layer-connector">
+    <div class="layer-connector-arrow">
+      <span class="material-symbols-sharp">south</span>
+    </div>
+  </div>
+
+  <div class="open-question">
+    <span class="material-symbols-sharp open-question-icon">help</span>
+    <div>
+      <div class="open-question-label">Open question — how do segments and the DD workflow relate?</div>
+      <div class="open-question-body">
+        <strong>Option A:</strong> one DD workflow run per segment (workflow scoped to segment) ·
+        <strong>Option B:</strong> one shared DD workflow, segments are filtered views of progress.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Layer 2: DD workflow ============ -->
+  <section class="layer">
+    <span class="layer-label">Layer 2</span>
+    <h2 class="layer-title">Due diligence workflow</h2>
+    <div class="layer-subtitle">Per-supplier risk progression. Each stage has embedded validation that determines whether the customer can proceed or needs to act first.</div>
+
+    <div class="workflow-stages" id="stages-grid">
+
+      <!-- Stage 1 -->
+      <div class="stage" data-stage="inherent-risk">
+        <div class="stage-header">
+          <div class="stage-num">1</div>
+          <div class="stage-titles">
+            <div class="stage-overline">Understand</div>
+            <div class="stage-title">Inherent risk</div>
+          </div>
+        </div>
+        <div class="stage-body">
+          <div class="stage-desc">Risk indices applied via company properties (industry, country) — sets the baseline risk picture before any supplier interaction.</div>
+          <div class="stage-actions-list">
+            <div class="action-chip" data-action="inherent-risk">
+              <span class="action-chip-icon"><span class="material-symbols-sharp">shield</span></span>
+              <span class="action-chip-label">Apply risk indices</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stage" data-stage="mitigate">
+        <div class="stage-header">
+          <div class="stage-num">2</div>
+          <div class="stage-titles">
+            <div class="stage-overline">Mitigate</div>
+            <div class="stage-title">Mitigation request</div>
+          </div>
+        </div>
+        <div class="stage-body">
+          <div class="stage-desc">Send a request (e.g. Baseline) that targets the inherent risk topics. Screen first; engage only as fallback.</div>
+          <div class="stage-actions-list">
+            <div class="action-chip is-recommended" data-action="screen">
+              <span class="action-chip-icon"><span class="material-symbols-sharp">search</span></span>
+              <span class="action-chip-label">Screen</span>
+              <span class="action-chip-tag">Recommended first</span>
+            </div>
+            <div class="action-chip is-fallback" data-action="engage">
+              <span class="action-chip-icon"><span class="material-symbols-sharp">mail</span></span>
+              <span class="action-chip-label">Engage</span>
+              <span class="action-chip-tag">Fallback</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stage" data-stage="expectations">
+        <div class="stage-header">
+          <div class="stage-num">3</div>
+          <div class="stage-titles">
+            <div class="stage-overline">Escalate</div>
+            <div class="stage-title">Set expectations</div>
+          </div>
+        </div>
+        <div class="stage-body">
+          <div class="stage-desc">If mitigation didn't satisfy the risk, require the supplier to improve across the unresolved topic areas.</div>
+          <div class="stage-actions-list">
+            <div class="action-chip" data-action="expectations">
+              <span class="action-chip-icon"><span class="material-symbols-sharp">flag</span></span>
+              <span class="action-chip-label">Set expectations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Detail panel (renders below stages on action click) -->
+    <div class="stage-detail-wrap" id="detail-wrap">
+      <div class="stage-detail-header">
+        <div class="stage-detail-title-group">
+          <div>
+            <div class="stage-detail-title-overline" id="detail-overline">Action</div>
+            <div class="stage-detail-title" id="detail-title">Action title</div>
+          </div>
+        </div>
+        <button class="stage-detail-close" id="detail-close" aria-label="Close">
+          <span class="material-symbols-sharp">close</span>
+        </button>
+      </div>
+      <div class="stage-detail-body" id="detail-body">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+  </section>
+
+  <div class="footer-note">Click any action above to see its validation and what the customer needs in place to proceed.</div>
+
+</div>
+
+<script>
+  // ============ Action definitions ============
+  const ACTIONS = {
+    "inherent-risk": {
+      overline: "Stage 1 · Understand",
+      title: "Apply inherent risk",
+      desc: "Risk indices are tied to country and industry properties on the company. Before risk can be computed, those properties need to be present on the supplier record.",
+      validations: [
+        { type: "HAS", text: "<code>country</code> and <code>industry</code> properties on the supplier" },
+      ],
+      requirements: [
+        { text: "Properties can be <strong>imported</strong> with supplier data, or <strong>enriched</strong> automatically." },
+        { text: "If the company is enriched and <strong>industry</strong> is not populated, the user is required to <strong>manually add it</strong>." }
+      ],
+      tip: "Country is typically reliable from enrichment; industry has lower coverage and is the most common manual-add gap."
+    },
+    "screen": {
+      overline: "Stage 2 · Mitigate · recommended first step",
+      title: "Screen",
+      desc: "Screening checks the supplier against public data and documents — low resource and can be automated. It's the recommended first step before any supplier engagement.",
+      validations: [
+        { type: "HAS", text: "<code>website</code> property on the supplier" }
+      ],
+      requirements: [
+        { text: "Website can be <strong>imported</strong> with supplier data, or <strong>enriched</strong> automatically." },
+        { text: "If the company is enriched and <strong>website</strong> is not populated, the user is required to <strong>manually add it</strong>." }
+      ],
+      tip: "Screening is the recommended first step because it's cheap and automatable. Engagement is only triggered if screening can't find public data."
+    },
+    "engage": {
+      overline: "Stage 2 · Mitigate · fallback",
+      title: "Engage",
+      desc: "Engagement asks the supplier to complete the request manually. It's used as a fallback when screening finds no public data, or when manual reporting is preferred.",
+      validations: [
+        { type: "IS",  text: "supplier has been <strong>screened</strong> and there's <strong>no public data</strong>" },
+        { type: "HAS", text: "<code>contact person name</code> and <code>contact email</code> on the supplier" }
+      ],
+      requirements: [
+        { text: "<strong>Invite via the platform</strong> requires contact person name + contact email." },
+        { text: "<strong>Dynamic invite link</strong> can be generated and shared as an alternative." }
+      ],
+      tip: "If contact details are missing, the user must add them before an invite can be sent. The dynamic link allows distribution outside the platform (e.g. forwarded internally)."
+    },
+    "expectations": {
+      overline: "Stage 3 · Escalate",
+      title: "Set expectations",
+      desc: "If mitigation hasn't resolved the risk, the customer can require the supplier to improve. Expectations are scoped to specific topic areas, not the whole supplier.",
+      validations: [
+        { type: "IS",  text: "supplier has been <strong>engaged</strong>" },
+        { type: "IS",  text: "supplier has <strong>reported manually</strong>" }
+      ],
+      requirements: [
+        { text: "Select the <strong>topic areas</strong> where risk is unresolved." },
+        { text: "Define <strong>improvement target + period</strong>." }
+      ],
+      tip: "Expectations are the last step in the cycle. They presume engagement + reporting have happened — otherwise the customer doesn't have data to act on."
+    }
+  };
+
+  // ============ Rendering ============
+  const stages = document.querySelectorAll(".stage");
+  const actionChips = document.querySelectorAll(".action-chip");
+  const detailWrap = document.getElementById("detail-wrap");
+  const detailOverline = document.getElementById("detail-overline");
+  const detailTitle = document.getElementById("detail-title");
+  const detailBody = document.getElementById("detail-body");
+  const detailClose = document.getElementById("detail-close");
+
+  function renderDetail(key) {
+    const a = ACTIONS[key];
+    if (!a) return;
+
+    detailOverline.textContent = a.overline;
+    detailTitle.textContent = a.title;
+
+    const validationHTML = a.validations.map(v => {
+      const cls = v.type === "HAS" ? "validation-item--has"
+                 : v.type === "IF"  ? "validation-item--if"
+                 : "validation-item--is";
+      return `
+        <li class="validation-item ${cls}">
+          <span class="validation-tag">${v.type}</span>
+          <span class="validation-text">${v.text}</span>
+        </li>
+      `;
+    }).join("");
+
+    const reqHTML = a.requirements && a.requirements.length
+      ? `<ul class="req-list">${a.requirements.map(r => `
+          <li class="req-item">
+            <span class="material-symbols-sharp">check_circle</span>
+            <span class="req-item-text">${r.text}</span>
+          </li>
+        `).join("")}</ul>`
+      : `<div class="req-empty">No additional requirements.</div>`;
+
+    detailBody.innerHTML = `
+      <p style="font-size:13px; color: var(--wf-color-text-secondary); margin: 0 0 20px 0; line-height: 1.5;">${a.desc}</p>
+
+      <div class="detail-grid">
+        <div>
+          <div class="detail-section-label">Validation</div>
+          <ul class="validation-list">${validationHTML}</ul>
+        </div>
+        <div>
+          <div class="detail-section-label">Requirements</div>
+          ${reqHTML}
+        </div>
+      </div>
+
+      ${a.tip ? `
+        <div class="tip">
+          <span class="material-symbols-sharp">lightbulb</span>
+          <div>${a.tip}</div>
+        </div>
+      ` : ""}
+    `;
+
+    detailWrap.classList.add("is-open");
+
+    // Smooth scroll to detail
+    setTimeout(() => {
+      detailWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 50);
+  }
+
+  function setActive(stageKey, actionKey) {
+    stages.forEach(s => s.classList.toggle("is-active", s.dataset.stage === stageKey));
+    actionChips.forEach(c => c.classList.toggle("is-active", c.dataset.action === actionKey));
+  }
+
+  // ============ Bind ============
+  actionChips.forEach(chip => {
+    chip.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const key = chip.dataset.action;
+      const stage = chip.closest(".stage").dataset.stage;
+      setActive(stage, key);
+      renderDetail(key);
+    });
+  });
+
+  // Clicking a stage = open the first action in it
+  stages.forEach(stage => {
+    stage.addEventListener("click", () => {
+      const firstChip = stage.querySelector(".action-chip");
+      if (firstChip) firstChip.click();
+    });
+  });
+
+  detailClose.addEventListener("click", () => {
+    detailWrap.classList.remove("is-open");
+    stages.forEach(s => s.classList.remove("is-active"));
+    actionChips.forEach(c => c.classList.remove("is-active"));
+  });
+
+  // Default: open Stage 1 detail on load
+  renderDetail("inherent-risk");
+  setActive("inherent-risk", "inherent-risk");
+</script>
+
+</body>
+</html>
